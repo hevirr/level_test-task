@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import styled from 'styled-components';
+import './styles/app.scss'
+import {
+  Routes,
+  Route,
+  Switch,
+} from "react-router-dom";
+import {AuthScreen} from "./pages";
+
+const StyledApp = styled.div`
+  min-height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StyledApp>
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={<AuthScreen />}
+        />
+      </Routes>
+    </StyledApp>
   );
 }
 
