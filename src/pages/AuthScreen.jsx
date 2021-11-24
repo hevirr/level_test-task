@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
 
 import {Button} from '../components';
 
@@ -19,11 +20,23 @@ const StyledAuthScreen = styled.div`
   }
 `;
 
-const AuthScreen = () => {
+const AuthScreen = ({setUserRole}) => {
+  const navigate = useNavigate();
+
+  const chooseRole = (role) => {
+    if (role === 'admin') {
+      setUserRole('admin')
+      navigate('admin');
+    } else {
+      setUserRole('player')
+      navigate('player');
+    }
+  }
+
   return (
     <StyledAuthScreen>
-      <Button color={'blue'} text={'Я администратор'} />
-      <Button color={'blue'} text={'Я участник'} />
+      <Button onClick={() => chooseRole('admin')} color={'blue'} text={'Я администратор'} />
+      <Button onClick={() => chooseRole('player')} color={'blue'} text={'Я участник'} />
     </StyledAuthScreen>
   );
 };
