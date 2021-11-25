@@ -18,15 +18,24 @@ const GamePage = () => {
   const [currentGame, setCurrentGame] = useState(null);
   const userRole = useSelector(({ userRole }) => userRole.userRole);
 
-  React.useEffect(() => {
-    console.log("exec");
+  const setGame = () => {
     const temporaryGamesArray = findGames();
     temporaryGamesArray.forEach((game, i) => {
       if (game.id === location.hash.slice(1)) {
         setCurrentGame(game);
       }
     });
-  }, []);
+  };
+
+  React.useEffect(() => {
+    // Игра обновляет состояние каждые 5 секунд. В моей реализации, по сути, не имеет смысла, т.к. копия состояния игры в
+    // localStorage обновляется после каждого действия игрока (и как следствие - на странице админа состояние обновляется real-time),
+    // но в реальном продакшене тут был бы запрос к серверу, а не к localStorage
+    setGame();
+    setInterval(() => {
+      setGame();
+    }, 5000);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <StyledGamePage>

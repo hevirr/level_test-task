@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { InfoTable, Button, ChartForAdmins } from "../index";
 
 const StyledGameForAdmins = styled.div`
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   .admin-game__subheader {
@@ -25,7 +25,7 @@ const StyledGameForAdmins = styled.div`
   .admin--game__model-data {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     padding-bottom: 20px;
 
     canvas {
@@ -36,8 +36,6 @@ const StyledGameForAdmins = styled.div`
 `;
 
 const GameForAdmins = ({ currentGame, setCurrentGame }) => {
-  console.log(currentGame);
-
   const setGameInactive = () => {
     setCurrentGame((prev) => {
       return {

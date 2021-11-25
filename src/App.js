@@ -1,17 +1,11 @@
 import "./styles/app.scss";
 
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
 import { setUserRole } from "./redux/actions/setUserRole";
-import {
-  Routes,
-  Route,
-  Switch,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { AuthScreen, AdminPanel, PlayerPage, GamePage } from "./pages";
 import { Header } from "./components";
 
@@ -38,11 +32,20 @@ function App() {
     const userRole = localStorage.getItem("levelUserRole");
     if (userRole) {
       dispatch(setUserRole(userRole));
-      // if (location.pathname === "/") {
-      //   navigate(`${userRole}`, { replace: true });
-      // }
+      if (location.pathname === "/") {
+        navigate(`${userRole}`, { replace: true });
+      }
+    } else {
+      // Это вроде аналога для Private/Authed Route. Раньше, я бы его и написал в виде HOC, но в react-router-dom v6
+      // внутри компонента Routes нельзя ничего вставлять, кроме как Route, поэтому сделал такой простой вариант.
+      // Там есть какой-то вариант использовать HOC для приватного роутинга в v6, но т.к. я и так задержался по срокам
+      // не стал еще и на это время тратить.
+      if (location.pathname !== "/") {
+        alert("Please, choose your role to proceed");
+        navigate("/", { replace: true });
+      }
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <StyledApp>

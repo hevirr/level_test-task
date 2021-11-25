@@ -1,12 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Link, Route, Routes } from "react-router-dom";
-import {
-  Button,
-  CreateGameInterface,
-  GamesList,
-  ChooseTeam,
-} from "../components";
+import { Route, useNavigate, Routes } from "react-router-dom";
+import { GamesList, ChooseTeam } from "../components";
+import { useSelector } from "react-redux";
 
 const StyledPlayerPage = styled.div`
   width: 100%;
@@ -17,6 +13,18 @@ const StyledPlayerPage = styled.div`
 `;
 
 const PlayerPage = () => {
+  const navigate = useNavigate();
+  const userRole = useSelector(({ userRole }) => userRole.userRole);
+
+  React.useEffect(() => {
+    if (userRole && userRole !== "player") {
+      alert(
+        "You are logged in as admin, please, relog as player to join the game"
+      );
+      navigate("/admin", { replace: true });
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <StyledPlayerPage>
       <div className="player-page__subheader">

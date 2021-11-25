@@ -41,7 +41,6 @@ const InfoBox = ({ title, isGameActive, gameId, type }) => {
       }
     }
     if (type === "team") {
-      console.log("success", gameId);
       navigate(`/game#${gameId}`, { state: title });
     }
   };
@@ -49,7 +48,7 @@ const InfoBox = ({ title, isGameActive, gameId, type }) => {
   return (
     <StyledInfoBox onClick={() => onClick()} isGameActive={isGameActive}>
       <div className="infobox__box-title">{title}</div>
-      {isGameActive && userRole === "admin" && (
+      {userRole === "admin" && (
         <div className="infobox__additional-info">
           {isGameActive ? "Активна" : "Завершена"}
         </div>

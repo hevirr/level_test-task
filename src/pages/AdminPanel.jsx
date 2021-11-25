@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { Button, GamesList, CreateGameInterface } from "../components";
@@ -18,16 +18,15 @@ const StyledAdminPanel = styled.div`
 
 const AdminPanel = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const userRole = useSelector(({ userRole }) => userRole.userRole);
 
   React.useEffect(() => {
-    if (userRole !== "admin") {
+    if (userRole && userRole !== "admin") {
       alert("You are not allowed to be here");
-      navigate(-1);
+      navigate("/player", { replace: true });
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <StyledAdminPanel>

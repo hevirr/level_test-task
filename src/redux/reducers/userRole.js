@@ -1,5 +1,5 @@
 const initialState = {
-  userRole: "",
+  userRole: localStorage.getItem("levelUserRole"),
 };
 
 const userRole = (state = initialState, action) => {

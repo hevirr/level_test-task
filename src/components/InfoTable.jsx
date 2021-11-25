@@ -85,6 +85,10 @@ const InfoTable = ({
   const checkIfEnoughQuantity = (goodType, goodQuantity) => {
     return currentGame.model[goodType].requiredQuantity <= goodQuantity;
   };
+
+  // Здесь у меня не получалось обратиться к свойству объекта по аргументу (как в функции выше),
+  // поэтому сделал 2 отдельные функции. Не очень красиво вышло, если мне подскажут, как это можно было
+  // реализовать с помощью аргументов - буду признателен :)
   const changeCoalQuantity = (value) => {
     setCurrentGame((prev) => {
       return {
@@ -111,6 +115,9 @@ const InfoTable = ({
   };
 
   React.useEffect(() => {
+    // После каждого апдейта состояния, обновляется и его копия в localState. В продакшене, это мб была бы
+    // излишняя нагрузка на сервер и делали бы синк раз в 5 секунд, как указано в ТЗ к тестовому, но
+    // тут на автомате сделал так
     if (currentGame) {
       localStorage.setItem(
         `levelGame(${currentGame.name})`,
@@ -181,19 +188,24 @@ const InfoTable = ({
 
         {/*===ADMIN===*/}
         {type === "admin" &&
-          currentGame.teams.map((team) => (
+          currentGame.teams.map((team, i) => (
             <div
+              // Тут логика выбора ключа такая же, как в компоненте ChooseTeam
+              key={i}
               onClick={() => checkIfEnoughQuantity("coal", 6)}
               className="info-table__column"
             >
               {" "}
               <div className="info-table-row  dynamic__header">{team.name}</div>
               <div
+                // Сделал conditional classnames (green и red) прямо в JSX, вместо styled-components, т.к. в этой
+                // ситуации пришлось бы передавать кучу пропсов в StyledInfoTable + к производительности решений
+                // css-in-js как я слышал, и так есть претензии, так что делать внутри какие-то расчеты тоже кажется
+                // не самой лучшей практикой
                 className={`info-table-row admin-view dynamic__coal ${
                   title === "Сводная" && "measure-table"
-                } ${
-                  checkIfEnoughQuantity("coal", team.coal) ? "green" : "red"
-                }`}
+                }
+                 ${checkIfEnoughQuantity("coal", team.coal) ? "green" : "red"}`}
               >
                 {team.coal}
               </div>

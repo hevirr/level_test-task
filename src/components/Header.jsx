@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserRole } from "../redux/actions/setUserRole";
 
 import { findGames } from "../functions/findGames";
-import userRole from "../redux/reducers/userRole";
 
 const StyledHeader = styled.div`
   background-color: #2e80ec;
@@ -35,6 +34,9 @@ const Header = () => {
   const userRole = useSelector(({ userRole }) => userRole.userRole);
 
   const findGameName = () => {
+    // Немного костыльно выглядит, но т.к. объект с конфигами хедера инициализируется при маунте, то опция
+    // для этого роута выдывала бы ошибку и крашила приложение без этого условия.
+    // Наверное, можно сделать лучше, но это самое простое и быстрое решение, которое я нашел
     if (location.pathname === "/player/choose-team/game") {
       return findGames().find((game) => game.id === location.hash.slice(1))
         .name;
@@ -52,12 +54,6 @@ const Header = () => {
         default:
           return;
       }
-    }
-  };
-
-  const findTeamName = () => {
-    if (location.pathname === "/game") {
-      return location.state;
     }
   };
 
@@ -106,7 +102,6 @@ const Header = () => {
   const [headerOption, setHeaderOption] = useState("");
 
   React.useEffect(() => {
-    console.log(location);
     setHeaderOption(location.pathname);
   }, [location]);
 
