@@ -34,7 +34,11 @@ const InfoBox = ({ title, isGameActive, gameId, type }) => {
           navigate(`/game#${gameId}`, { replace: true });
           break;
         case "player":
-          navigate(`choose-team/game#${gameId}`);
+          if (isGameActive) {
+            navigate(`choose-team/game#${gameId}`);
+          } else {
+            alert("You cannot join this game since it's already been finished");
+          }
           break;
         default:
           return;
