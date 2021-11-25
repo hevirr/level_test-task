@@ -5,11 +5,12 @@ const StyledButton = styled.button`
   background-color: ${({ color }) => color === "blue" && "#2e80ec"};
   background-color: ${({ color }) => color === "green" && "#26ad60"};
   background-color: ${({ color }) => color === "red" && "#eb5756"};
+  background-color: ${({ color }) => color === "gray" && "#eaeaea"};
 
   border: none;
-  color: white;
+  color: ${({ color }) => (color === "gray" ? "black" : "white")};
   padding: 10px;
-  cursor: pointer;
+  cursor: ${({ color }) => (color === "gray" ? "default" : "pointer")};
   min-width: 150px;
   font-weight: 300;
 `;

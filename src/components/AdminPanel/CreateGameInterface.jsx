@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "../index";
@@ -20,7 +21,7 @@ const StyledCreateGameInterface = styled.div`
 const CreateGameInterface = () => {
   const navigate = useNavigate();
   const [gameName, setGameName] = useState("");
-  const [gameTeamsQuantity, setGameTeamsQuantity] = useState(0);
+  const [gameTeamsQuantity, setGameTeamsQuantity] = useState();
 
   const createGame = () => {
     if (localStorage.getItem(gameName)) {
@@ -37,8 +38,19 @@ const CreateGameInterface = () => {
     }
     const game = {
       name: gameName,
+      id: uuidv4(),
       teamsQuantity: gameTeamsQuantity,
       isGameActive: true,
+      model: {
+        coal: {
+          marketPrice: 10,
+          requiredQuantity: 6,
+        },
+        iron: {
+          marketPrice: 20,
+          requiredQuantity: 4,
+        },
+      },
       teams,
     };
     localStorage.setItem(`levelGame(${game.name})`, JSON.stringify(game));

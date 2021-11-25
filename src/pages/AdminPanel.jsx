@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { Button, GamesList, CreateGameInterface } from "../components";
 import { Route, Routes } from "react-router-dom";
@@ -16,10 +17,16 @@ const StyledAdminPanel = styled.div`
 `;
 
 const AdminPanel = () => {
+  const navigate = useNavigate();
   const location = useLocation();
 
+  const userRole = useSelector(({ userRole }) => userRole.userRole);
+
   React.useEffect(() => {
-    console.log(location);
+    if (userRole !== "admin") {
+      alert("You are not allowed to be here");
+      navigate(-1);
+    }
   }, []);
 
   return (

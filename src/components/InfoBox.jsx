@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const StyledInfoBox = styled.div`
   display: flex;
@@ -21,11 +23,33 @@ const StyledInfoBox = styled.div`
   }
 `;
 
-const InfoBox = ({ title, isGameActive }) => {
+const InfoBox = ({ title, isGameActive, gameId, type }) => {
+  const navigate = useNavigate();
+  const userRole = useSelector(({ userRole }) => userRole.userRole);
+
+  const onClick = () => {
+    if (type === "game") {
+      switch (userRole) {
+        case "admin":
+          navigate(`/game#${gameId}`, { replace: true });
+          break;
+        case "player":
+          navigate(`choose-team/game#${gameId}`);
+          break;
+        default:
+          return;
+      }
+    }
+    if (type === "team") {
+      console.log("success", gameId);
+      navigate(`/game#${gameId}`, { state: title });
+    }
+  };
+
   return (
-    <StyledInfoBox isGameActive={isGameActive}>
+    <StyledInfoBox onClick={() => onClick()} isGameActive={isGameActive}>
       <div className="infobox__box-title">{title}</div>
-      {isGameActive && (
+      {isGameActive && userRole === "admin" && (
         <div className="infobox__additional-info">
           {isGameActive ? "Активна" : "Завершена"}
         </div>

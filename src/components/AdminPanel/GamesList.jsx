@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
+import { findGames } from "../../functions/findGames";
+
 import { InfoBox } from "../index";
 
 const StyledGamesList = styled.div`
@@ -16,13 +18,7 @@ const GamesList = () => {
   const [games, setGames] = useState([]);
 
   React.useEffect(() => {
-    let temporaryGamesArray = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      let key = localStorage.key(i);
-      if (key.includes("levelGame")) {
-        temporaryGamesArray.push(JSON.parse(localStorage.getItem(key)));
-      }
-    }
+    let temporaryGamesArray = findGames();
     setGames([...temporaryGamesArray]);
   }, []);
 
@@ -30,7 +26,15 @@ const GamesList = () => {
     <StyledGamesList>
       {games &&
         games.map((game, i) => {
-          return <InfoBox title={game.name} isGameActive={game.isGameActive} />;
+          return (
+            <InfoBox
+              key={game.id}
+              gameId={game.id}
+              title={game.name}
+              isGameActive={game.isGameActive}
+              type={"game"}
+            />
+          );
         })}
     </StyledGamesList>
   );
